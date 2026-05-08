@@ -36,13 +36,23 @@ Il LED lampeggia 3 volte veloci ogni 2s → `ERROR state`. Cause possibili:
 
 ## Reset configurazione completo
 
-**Metodo 1 — Via web (se in AP mode):**
+**Metodo 1 — Via Serial Monitor (sempre disponibile):**
+
+Apri il Serial Monitor a 115200 baud, scrivi e premi Invio:
+
+```
+RESET
+```
+
+Il dispositivo cancella tutta la NVS e riavvia come al primo boot.
+
+**Metodo 2 — Via web (se in AP mode):**
 
 ```
 http://192.168.4.1/reset
 ```
 
-**Metodo 2 — Via MQTT (se connesso):**
+**Metodo 3 — Via MQTT (se connesso):**
 
 ```bash
 mosquitto_pub -h <broker_ip> \

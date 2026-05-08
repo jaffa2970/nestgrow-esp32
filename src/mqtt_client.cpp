@@ -53,6 +53,14 @@ static void handle_config_cmd(const char *buf) {
             nc.zona_interval[zona - 1] = interval_ms;
         }
         nvs_save(nc);
+
+        // DEBUG — verifica read-back da NVS
+        Serial.printf("[NVS] save zona %d interval %d\n", zona, interval_ms);
+        NVSConfig verify;
+        nvs_load(verify);
+        Serial.printf("[NVS] readback zona %d: %d\n",
+            zona == 0 ? 1 : zona,
+            zona == 0 ? verify.zona_interval[0] : verify.zona_interval[zona - 1]);
     }
 
     // ACK

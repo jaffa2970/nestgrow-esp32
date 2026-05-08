@@ -59,6 +59,37 @@ void setup() {
 void loop() {
     led_update();
 
+    // ── Comandi Serial Monitor ────────────────────────────────────────────────
+    if (Serial.available()) {
+        String cmd = Serial.readStringUntil('\n');
+        cmd.trim();
+
+        if (cmd == "RESET") {
+            Serial.println("[CMD] Reset NVS completo...");
+            nvs_clear();
+            delay(500);
+            ESP.restart();
+        }
+        else if (cmd == "STATUS") {
+            Serial.printf("[CMD] Device  : %s\n", g_cfg.device_name);
+            Serial.printf("[CMD] WiFi    : %s\n",
+                WiFi.status() == WL_CONNECTED ? WiFi.localIP().toString().c_str() : "disconnesso");
+            Serial.printf("[CMD] MQTT    : %s\n", mqtt_is_connected() ? "connesso" : "disconnesso");
+            Serial.printf("[CMD] NTP     : %s\n", ntp_is_synced() ? ntp_local_time_iso().c_str() : "non sincronizzato");
+            Serial.printf("[CMD] zona_interval (NVS): [%d, %d, %d, %d] ms\n",
+                g_cfg.zona_interval[0], g_cfg.zona_interval[1],
+                g_cfg.zona_interval[2], g_cfg.zona_interval[3]);
+            Serial.printf("[CMD] zona_interval (RAM): [%d, %d, %d, %d] ms\n",
+                mqtt_get_zone_interval(1), mqtt_get_zone_interval(2),
+                mqtt_get_zone_interval(3), mqtt_get_zone_interval(4));
+            Serial.printf("[CMD] Free heap: %u bytes\n", (unsigned int)ESP.getFreeHeap());
+            Serial.printf("[CMD] Uptime   : %lu s\n", millis() / 1000UL);
+        }
+        else if (cmd.length() > 0) {
+            Serial.println("[CMD] Comandi: RESET | STATUS");
+        }
+    }
+
     // ── AP / captive-portal mode ─────────────────────────────────────────────
     if (wifi_is_ap_mode()) {
         wifi_loop();

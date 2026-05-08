@@ -44,6 +44,12 @@ void nvs_load(NVSConfig &cfg) {
     }
 
     prefs.end();
+
+    // DEBUG — rimuovere dopo verifica
+    Serial.printf("[NVS] load zona_interval[0]: %d\n", cfg.zona_interval[0]);
+    Serial.printf("[NVS] load zona_interval[1]: %d\n", cfg.zona_interval[1]);
+    Serial.printf("[NVS] load zona_interval[2]: %d\n", cfg.zona_interval[2]);
+    Serial.printf("[NVS] load zona_interval[3]: %d\n", cfg.zona_interval[3]);
 }
 
 void nvs_save(const NVSConfig &cfg) {

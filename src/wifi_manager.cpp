@@ -111,6 +111,8 @@ void wifi_start_ap(const NVSConfig &cfg) {
     server.on("/save", HTTP_POST, [](AsyncWebServerRequest *req) {
         NVSConfig nc;
         memset(&nc, 0, sizeof(nc));
+        // Inizializza zona_interval al default — memset li azzererebbe a 0
+        for (int i = 0; i < 4; i++) nc.zona_interval[i] = (int)DEFAULT_INTERVAL_MS;
 
         auto get = [&](const char *key, char *dst, size_t len) {
             if (req->hasParam(key, true))

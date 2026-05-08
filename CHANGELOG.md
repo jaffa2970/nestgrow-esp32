@@ -5,6 +5,21 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/).
 
 ---
 
+## [1.1.0] — 2026-05-08
+
+### Aggiunto
+
+- **Comandi Serial Monitor** — invia `RESET` o `STATUS` a 115200 baud:
+  - `RESET` → cancella tutta la NVS e riavvia (primo boot)
+  - `STATUS` → stampa device, WiFi, MQTT, NTP, intervalli zona (NVS vs RAM), heap libera, uptime
+
+### Corretto
+
+- **Bug captive portal NVS** — il POST `/save` azzerava `zona_interval[4]` con `memset` prima di chiamare `nvs_save`. Questo scriveva `0 ms` per tutte le zone in NVS, sovrascrivendo qualsiasi intervallo configurato via MQTT. Fix: inizializzazione a `DEFAULT_INTERVAL_MS` dopo `memset`.
+- **Debug NVS** — aggiunto read-back immediato dopo ogni `nvs_save` degli intervalli zona e print dei valori letti all'avvio per diagnostica.
+
+---
+
 ## [1.0.0] — 2026-05-08
 
 ### Aggiunto

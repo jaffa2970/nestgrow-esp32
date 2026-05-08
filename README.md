@@ -23,6 +23,7 @@ Firmware open source per **ESP32 WROOM-32** che gestisce culle di accrescimento 
 - **Safety timeout** valvole (5 minuti massimo)
 - **Blocco automatico** se serbatoio vuoto
 - **LED stato** sistema (AP / connessione / operativo / errore)
+- **Comandi Serial Monitor** — `RESET` e `STATUS` da terminale seriale
 
 ---
 
@@ -150,6 +151,30 @@ In `src/config.h` modifica i valori raw ADC:
 ```
 
 Vedi [docs/CALIBRATION.md](docs/CALIBRATION.md) per la procedura completa.
+
+### Comandi Serial Monitor
+
+Con il Serial Monitor aperto a **115200 baud**, scrivi un comando e premi Invio:
+
+| Comando | Effetto |
+|---|---|
+| `RESET` | Cancella tutta la NVS e riavvia — il dispositivo riparte come al primo boot |
+| `STATUS` | Stampa device ID, IP, stato MQTT, NTP, intervalli zona (NVS vs RAM), heap libera |
+
+Esempio output `STATUS`:
+
+```
+[CMD] Device  : nestgrow-a4b2
+[CMD] WiFi    : 192.168.1.45
+[CMD] MQTT    : connesso
+[CMD] NTP     : 2026-05-08T19:32:13
+[CMD] zona_interval (NVS): [30000, 30000, 30000, 30000] ms
+[CMD] zona_interval (RAM): [10000, 30000, 30000, 30000] ms
+[CMD] Free heap: 187432 bytes
+[CMD] Uptime   : 142 s
+```
+
+> La colonna **NVS** mostra i valori che sopravvivono al riavvio; la colonna **RAM** mostra i valori correnti (modificabili via `cmd/config` senza `salva_nvs`).
 
 ### Modalità debug
 
